@@ -43,4 +43,9 @@ public class ProductRepository : BaseRepository<Product>, IProductRepository
         var filter = Builders<Product>.Filter.Eq(p => p.Id, id);
         await MongoCollection.DeleteOneAsync(filter);
     }
+    
+    public async Task<Product?> GetProductByIdAsync(Guid id)
+    {
+        return await FindByPredicateAsync(p => p.Id.Equals(id));
+    }
 }

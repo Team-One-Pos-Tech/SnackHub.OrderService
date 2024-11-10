@@ -11,5 +11,6 @@ namespace SnackHub.OrderService.Domain.Contracts
         Task AddAsync(Product product);
         Task EditAsync(Product product);
         Task RemoveAsync(Guid id);
+        Task<Product?> GetProductByIdAsync(Guid id);
     }
 }

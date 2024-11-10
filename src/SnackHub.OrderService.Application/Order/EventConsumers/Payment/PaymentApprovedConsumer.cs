@@ -46,10 +46,10 @@ public class PaymentApprovedConsumer : IConsumer<PaymentApproved>
             .Items
             .Select(item => new ProductionOrderProductDetails(item.ProductId, item.Quantity));
         
-        await SubmitKitchenOrder(order.Id, products);
+        await SubmitProductionOrder(order.Id, products);
     }
     
-    private async Task SubmitKitchenOrder(Guid orderId, IEnumerable<ProductionOrderProductDetails> productList)
+    private async Task SubmitProductionOrder(Guid orderId, IEnumerable<ProductionOrderProductDetails> productList)
     {
         _logger.LogInformation("Submitting a Production Order for order [{orderId}]", orderId);
         

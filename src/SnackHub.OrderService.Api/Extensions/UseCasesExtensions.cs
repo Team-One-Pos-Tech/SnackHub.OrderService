@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using SnackHub.OrderService.Application.Order.Contracts;
-using SnackHub.OrderService.Application.Order.UseCases;
+using SnackHub.OrderService.Application.Contracts;
+using SnackHub.OrderService.Application.UseCases;
 
 namespace SnackHub.OrderService.Api.Extensions;
 

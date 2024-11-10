@@ -2,10 +2,9 @@ using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SnackHub.OrderService.Api.Configuration;
-using SnackHub.OrderService.Application.Order.EventConsumers.Client;
-using SnackHub.OrderService.Application.Order.EventConsumers.Payment;
-using SnackHub.OrderService.Application.Order.EventConsumers.Production;
-using SnackHub.OrderService.Application.Order.Models.Client;
+using SnackHub.OrderService.Application.EventConsumers.Client;
+using SnackHub.OrderService.Application.EventConsumers.Payment;
+using SnackHub.OrderService.Application.EventConsumers.Production;
 
 namespace SnackHub.OrderService.Api.Extensions;
 

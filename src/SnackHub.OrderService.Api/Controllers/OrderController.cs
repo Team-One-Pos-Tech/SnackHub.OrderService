@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SnackHub.OrderService.Api.Extensions;
-using SnackHub.OrderService.Application.Order.Contracts;
-using SnackHub.OrderService.Application.Order.Models.Order;
+using SnackHub.OrderService.Application.Contracts;
+using SnackHub.OrderService.Application.Models.Order;
 
 namespace SnackHub.OrderService.Api.Controllers;
 

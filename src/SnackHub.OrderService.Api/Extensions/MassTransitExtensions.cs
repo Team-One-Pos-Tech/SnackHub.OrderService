@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SnackHub.OrderService.Api.Configuration;
 using SnackHub.OrderService.Application.EventConsumers.Client;
 using SnackHub.OrderService.Application.EventConsumers.Payment;
+using SnackHub.OrderService.Application.EventConsumers.Product;
 using SnackHub.OrderService.Application.EventConsumers.Production;
 
 namespace SnackHub.OrderService.Api.Extensions;
@@ -24,6 +25,10 @@ public static class MassTransitExtensions
             
             busConfigurator.AddConsumer<ProductionOrderAcceptedConsumer>();
             busConfigurator.AddConsumer<ProductionOrderCompletedConsumer>();
+
+            busConfigurator.AddConsumer<ProductCreatedConsumer>();
+            busConfigurator.AddConsumer<ProductUpdatedConsumer>();
+            busConfigurator.AddConsumer<ProductDeletedConsumer>();
             
             busConfigurator.SetKebabCaseEndpointNameFormatter();
             busConfigurator.UsingRabbitMq((context, configurator) =>

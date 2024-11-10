@@ -17,12 +17,12 @@ public record Product
     }
     
     private Product() { }
-    public static Product Create(Guid id, string name, decimal price, string description)
+    public static Product Create(Guid id, string name, string description, decimal price)
         => new Product
         {
             Id = id,
             Name = name,
-            Price = price,
             Description = description,
+            Price = price,
         };
 }

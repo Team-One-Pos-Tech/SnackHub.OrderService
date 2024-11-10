@@ -25,7 +25,7 @@ public static class MassTransitExtensions
             
             busConfigurator.AddConsumer<ProductionOrderAcceptedConsumer>();
             busConfigurator.AddConsumer<ProductionOrderCompletedConsumer>();
-
+            
             busConfigurator.AddConsumer<ProductCreatedConsumer>();
             busConfigurator.AddConsumer<ProductUpdatedConsumer>();
             busConfigurator.AddConsumer<ProductDeletedConsumer>();
@@ -33,10 +33,13 @@ public static class MassTransitExtensions
             busConfigurator.SetKebabCaseEndpointNameFormatter();
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {
-                // configurator.ReceiveEndpoint(settings.Host, queueConfigurator =>
-                // {
-                //     queueConfigurator.AutoDelete = true;
-                // });
+                // Shared messages - those will be in a replicated queue at RabbitMQ
+                configurator.ReceiveEndpoint("order-service", rabbitMqReceiveEndpointConfigurator =>
+                {
+                    rabbitMqReceiveEndpointConfigurator.ConfigureConsumer<ProductCreatedConsumer>(context);
+                    rabbitMqReceiveEndpointConfigurator.ConfigureConsumer<ProductUpdatedConsumer>(context);
+                    rabbitMqReceiveEndpointConfigurator.ConfigureConsumer<ProductDeletedConsumer>(context);
+                });
                 
                 configurator.Host(settings.Host, "/",  rabbitMqHostConfigurator =>
                 {

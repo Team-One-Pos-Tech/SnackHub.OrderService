@@ -20,7 +20,7 @@ public class ProductCreatedConsumer : IConsumer<ProductCreated>
         _logger = logger;
         _productRepository = productRepository;
     }
-
+    
     public async Task Consume(ConsumeContext<ProductCreated> context)
     {
         _logger.LogInformation("The product [{productName}] has been created by a external service", context.Message.Name);

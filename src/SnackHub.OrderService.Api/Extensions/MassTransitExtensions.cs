@@ -17,6 +17,8 @@ public static class MassTransitExtensions
         
         serviceCollection.AddMassTransit(busConfigurator =>
         {
+            busConfigurator.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("order-service"));
+            
             busConfigurator.AddConsumer<ClientAddedConsumer>();
             busConfigurator.AddConsumer<ClientRemovedConsumer>();
             
@@ -33,13 +35,6 @@ public static class MassTransitExtensions
             busConfigurator.SetKebabCaseEndpointNameFormatter();
             busConfigurator.UsingRabbitMq((context, configurator) =>
             {
-                // Shared messages - those will be in a replicated queue at RabbitMQ
-                configurator.ReceiveEndpoint("order-service", rabbitMqReceiveEndpointConfigurator =>
-                {
-                    rabbitMqReceiveEndpointConfigurator.ConfigureConsumer<ProductCreatedConsumer>(context);
-                    rabbitMqReceiveEndpointConfigurator.ConfigureConsumer<ProductUpdatedConsumer>(context);
-                    rabbitMqReceiveEndpointConfigurator.ConfigureConsumer<ProductDeletedConsumer>(context);
-                });
                 
                 configurator.Host(settings.Host, "/",  rabbitMqHostConfigurator =>
                 {

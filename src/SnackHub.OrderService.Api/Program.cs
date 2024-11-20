@@ -15,11 +15,9 @@ builder.Services
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services
     .AddEndpointsApiExplorer()
-    .AddEndpointsApiExplorer()
     .AddSwaggerGen(options =>
     {
         options.SwaggerDoc("v1", new OpenApiInfo { Title = "Snack Hub Order Service", Version = "v1" });
-        options.AddAuthorizationOptions();
         
         var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
         var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -46,8 +44,6 @@ if (bool.TryParse(builder.Configuration.GetSection("https").Value, out var resul
 
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseAuthentication();
-app.UseAuthorization();
 app.UseMongoDbConventions();
 app.MapControllers();
 app.Run();

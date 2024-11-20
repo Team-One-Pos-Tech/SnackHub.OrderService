@@ -4,6 +4,9 @@ using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using SnackHub.OrderService.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +22,6 @@ builder.Services
     .AddSwaggerGen(options =>
     {
         options.SwaggerDoc("v1", new OpenApiInfo { Title = "Snack Hub Order Service", Version = "v1" });
-        options.AddAuthorizationOptions();
         
         var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
         var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -27,7 +29,7 @@ builder.Services
         
     })
     .AddHttpClient();
-
+BsonSerializer.TryRegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
 builder
     .Services
@@ -46,8 +48,6 @@ if (bool.TryParse(builder.Configuration.GetSection("https").Value, out var resul
 
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseAuthentication();
-app.UseAuthorization();
 app.UseMongoDbConventions();
 app.MapControllers();
 app.Run();

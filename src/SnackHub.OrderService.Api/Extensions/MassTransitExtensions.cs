@@ -19,8 +19,7 @@ public static class MassTransitExtensions
         {
             busConfigurator.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("order-service"));
             
-            busConfigurator.AddConsumer<ClientAddedConsumer>();
-            busConfigurator.AddConsumer<ClientRemovedConsumer>();
+            busConfigurator.AddConsumer<ClientCreatedConsumer>();
             
             busConfigurator.AddConsumer<PaymentApprovedConsumer>();
             busConfigurator.AddConsumer<PaymentRejectedConsumer>();

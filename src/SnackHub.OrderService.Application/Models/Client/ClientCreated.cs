@@ -4,5 +4,5 @@ using MassTransit;
 namespace SnackHub.OrderService.Application.Models.Client;
 
 [MessageUrn("snack-hub-clients")]
-[EntityName("client-added")]
-public record ClientAdded(Guid Identifier);
+[EntityName("client-created")]
+public record ClientCreated(Guid Id, string Name, string Cpf, string Email = "");

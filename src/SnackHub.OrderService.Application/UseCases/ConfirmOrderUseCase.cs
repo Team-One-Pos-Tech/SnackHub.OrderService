@@ -40,10 +40,10 @@ public class ConfirmOrderUseCase : IConfirmOrderUseCase
     {
         var response = new ConfirmOrderResponse();
         
-        var client = await GetClient(request.Identifier);
+        var client = await GetClient(request.ClientId);
         if (client is null)
         {
-            response.AddNotification(nameof(request.Identifier), "Client not found");
+            response.AddNotification(nameof(request.ClientId), "Client not found");
             return response;
         }
         
@@ -73,7 +73,7 @@ public class ConfirmOrderUseCase : IConfirmOrderUseCase
         return null;
     }
     
-    private async Task<(IReadOnlyCollection<OrderItem>, bool)> GetOrderItems(IEnumerable<ConfirmOrderRequest.Item> items)
+    private async Task<(IReadOnlyCollection<OrderItem>, bool)> GetOrderItems(IEnumerable<Item> items)
     {
         var requestItems = items
             .GroupBy(item => item.ProductId)

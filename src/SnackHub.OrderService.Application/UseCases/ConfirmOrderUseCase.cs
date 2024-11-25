@@ -112,7 +112,7 @@ public class ConfirmOrderUseCase : IConfirmOrderUseCase
 
         await _orderRepository.AddAsync(order);
             
-        var paymentRequest = new PaymentRequest(order.Id, order.Total, new { order.Id });
+        var paymentRequest = new PaymentRequest(order.Id, order.ClientId, order.Total);
         await _publishEndpoint.Publish(paymentRequest);
 
         return response;

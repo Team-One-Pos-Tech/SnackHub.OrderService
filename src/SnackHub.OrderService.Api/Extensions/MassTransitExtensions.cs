@@ -21,6 +21,8 @@ public static class MassTransitExtensions
             
             busConfigurator.AddConsumer<ClientCreatedConsumer>();
             
+            // Todo: Move this logic to a better place!
+            busConfigurator.AddConsumer<PaymentStatusUpdatedConsumer>();
             busConfigurator.AddConsumer<PaymentApprovedConsumer>();
             busConfigurator.AddConsumer<PaymentRejectedConsumer>();
             

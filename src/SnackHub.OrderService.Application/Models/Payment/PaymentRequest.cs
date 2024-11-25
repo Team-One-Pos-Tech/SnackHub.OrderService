@@ -7,6 +7,6 @@ namespace SnackHub.OrderService.Application.Models.Payment;
 [EntityName("payment-requested")]
 public record PaymentRequest(
     Guid OrderId,
-    decimal Amount,
-    object? Metadata = null
+    Guid? CustomerId,
+    decimal Amount
 );

@@ -34,7 +34,7 @@ public abstract class BaseRepository<TModel> : IBaseRepository<TModel> where TMo
         await MongoCollection.DeleteOneAsync(predicate);
     }
 
-    public async Task<TModel> FindByPredicateAsync(Expression<Func<TModel, bool>> predicate)
+    public async Task<TModel?> FindByPredicateAsync(Expression<Func<TModel, bool>> predicate)
     {
         var cursor = await MongoCollection.FindAsync(predicate);
         return await cursor.FirstOrDefaultAsync();

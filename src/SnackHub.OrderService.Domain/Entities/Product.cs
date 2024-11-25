@@ -2,7 +2,7 @@ using System;
 
 namespace SnackHub.OrderService.Domain.Entities;
 
-public record Product
+public class Product
 {
     public Guid Id { get; init; }
     public string Name { get; set; }

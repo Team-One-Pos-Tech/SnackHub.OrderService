@@ -11,7 +11,7 @@ using SnackHub.OrderService.Application.Models.Order;
 namespace SnackHub.OrderService.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]/v1"), Authorize]
+[Route("api/[controller]/v1")]
 public class OrderController : ControllerBase
 {
     private readonly IConfirmOrderUseCase _confirmOrderUseCase;

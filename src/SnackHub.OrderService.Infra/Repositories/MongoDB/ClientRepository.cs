@@ -27,11 +27,11 @@ public class ClientRepository : BaseRepository<Client>, IClientRepository
 
     public async Task RemoveAsync(Guid identifier)
     {
-        await DeleteByPredicateAsync(client => client.Identifier.Equals(identifier));
+        await DeleteByPredicateAsync(client => client.Id.Equals(identifier));
     }
 
     public async Task<Client?> GetByIdentifierAsync(Guid id)
     {
-        return await FindByPredicateAsync(x => x.Identifier.Equals(id));
+        return await FindByPredicateAsync(client => client.Id.Equals(id));
     }
 }

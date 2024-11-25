@@ -23,7 +23,7 @@ public class ClientCreatedConsumer : IConsumer<ClientCreated>
     {
         _logger.LogInformation("A new client with identifier [{clientIdentifier}] has been added service by a external service!", context.Message.Id);
 
-        var client = new Domain.Entities.Client(context.Message.Id, context.Message.Name, context.Message.Email);
+        var client = Domain.Entities.Client.Create(context.Message.Id, context.Message.Name, context.Message.Email);
         await _clientRepository.AddAsync(client);
     }
 }

@@ -15,16 +15,16 @@ using OrderItemFactory = SnackHub.OrderService.Domain.ValueObjects.OrderItem.Fac
 
 namespace SnackHub.OrderService.Application.UseCases;
 
-public class ConfirmOrderUseCase : IConfirmOrderUseCase 
+public class ConfirmOrderUseCase : IConfirmOrderUseCase
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IClientRepository _clientRepository;
     private readonly IProductRepository _productRepository;
-    
+
     private readonly IPublishEndpoint _publishEndpoint;
-    
+
     public ConfirmOrderUseCase(
-        IOrderRepository orderRepository, 
+        IOrderRepository orderRepository,
         IClientRepository clientRepository,
         IProductRepository productRepository,
         IPublishEndpoint publishEndpoint)
@@ -32,21 +32,21 @@ public class ConfirmOrderUseCase : IConfirmOrderUseCase
         _orderRepository = orderRepository;
         _clientRepository = clientRepository;
         _productRepository = productRepository;
-        
+
         _publishEndpoint = publishEndpoint;
     }
-    
+
     public async Task<ConfirmOrderResponse> Execute(ConfirmOrderRequest request)
     {
         var response = new ConfirmOrderResponse();
-        
+
         var client = await GetClient(request.ClientId);
         if (client is null)
         {
             response.AddNotification(nameof(request.ClientId), "Client not found");
             return response;
         }
-        
+
         var (orderItems, orderItemsValid) = await GetOrderItems(request.Items);
         if (!orderItemsValid)
         {
@@ -57,7 +57,7 @@ public class ConfirmOrderUseCase : IConfirmOrderUseCase
         try
         {
             return await ConfirmOrderAsync(client, orderItems);
-        } 
+        }
         catch (DomainException e)
         {
             response.AddNotification("Order", e.Message);
@@ -68,24 +68,24 @@ public class ConfirmOrderUseCase : IConfirmOrderUseCase
     private async Task<Client?> GetClient(string identifier)
     {
         if (Guid.TryParse(identifier, out var clientId))
-            return   await _clientRepository.GetByIdentifierAsync(clientId);
-        
+            return await _clientRepository.GetByIdentifierAsync(clientId);
+
         return null;
     }
-    
+
     private async Task<(IReadOnlyCollection<OrderItem>, bool)> GetOrderItems(IEnumerable<Item> items)
     {
         var requestItems = items
             .GroupBy(item => item.ProductId)
             .ToDictionary(item => item.Key, group => group.Sum(g => g.Quantity));
-        
+
         var products = await _productRepository.GetByIdsAsync(requestItems.Keys);
         var productMap = products.ToDictionary(product => product.Id);
         if (productMap.Count != requestItems.Count)
         {
             return ([], false);
         }
-        
+
         var orderItems = requestItems
             .Select(item =>
             {
@@ -100,7 +100,7 @@ public class ConfirmOrderUseCase : IConfirmOrderUseCase
 
     private async Task<ConfirmOrderResponse> ConfirmOrderAsync(Client client, IReadOnlyCollection<OrderItem> orderItems)
     {
-        var order = OrderFactory.Create(client.Identifier, orderItems);
+        var order = OrderFactory.Create(client.Id, orderItems);
         order.Confirm();
 
         var response = new ConfirmOrderResponse
@@ -111,7 +111,7 @@ public class ConfirmOrderUseCase : IConfirmOrderUseCase
         };
 
         await _orderRepository.AddAsync(order);
-            
+
         var paymentRequest = new PaymentRequest(order.Id, order.ClientId, order.Total);
         await _publishEndpoint.Publish(paymentRequest);
 

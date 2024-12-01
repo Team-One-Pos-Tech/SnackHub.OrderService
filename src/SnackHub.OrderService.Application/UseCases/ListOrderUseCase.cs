@@ -20,13 +20,13 @@ public class ListOrderUseCase : IListOrderUseCase
     {
         var orders = await _orderRepository.ListAllAsync();
         
-        return orders.Select(o => new OrderResponse
+        return orders.Select(order => new OrderResponse
         {
-            Id = o.Id,
-            Items = o.Items.Select(i => (i.ProductName, i.Quantity)).ToList(),
-            Status = o.Status.ToString(),
-            CreatedAt = o.CreatedAt,
-            UpdatedAt = o.UpdatedAt
+            Id = order.Id,
+            Items = order.Items.Select(orderItem => (orderItem.ProductName, orderItem.Quantity)).ToList(),
+            Status = order.Status.ToString(),
+            CreatedAt = order.CreatedAt,
+            UpdatedAt = order.UpdatedAt
         }).ToList();
     }
 }

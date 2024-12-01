@@ -5,6 +5,7 @@ jobs:
     with:
       solution-name: "SnackHub.OrderService.sln"
       api-project-name: "SnackHub.OrderService.Api"
+      sonar-project-key: "Team-One-Pos-Tech_SnackHub.OrderService"
       
   docker-setup:
     needs: build-and-test

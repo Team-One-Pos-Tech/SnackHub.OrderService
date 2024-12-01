@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MassTransit;
@@ -27,7 +26,7 @@ public class ConfirmOrderUseCaseStepDefinition : MongoDbFixture
     
     private IConfirmOrderUseCase _confirmOrderUseCase;
     private ICancelOrderUseCase _cancelOrderUseCase;
-    private IListOrderUseCase _listOrderUseCase;
+    private IGetOrderUseCase _getOrderUseCase;
     private ICheckPaymentStatusUseCase _checkPaymentStatusUseCase;
     
     private Guid? _confirmOrderId;
@@ -46,7 +45,7 @@ public class ConfirmOrderUseCaseStepDefinition : MongoDbFixture
         _confirmOrderUseCase = new ConfirmOrderUseCase(_orderRepository, _clientRepository, _productRepository,
             _publishEndpointMock.Object);
         _cancelOrderUseCase = new CancelOrderUseCase(_orderRepository);
-        _listOrderUseCase = new ListOrderUseCase(_orderRepository);
+        _getOrderUseCase = new GetOrderUseCase(_orderRepository);
         _checkPaymentStatusUseCase = new CheckPaymentStatusUseCase(_orderRepository);
     }
 
@@ -89,11 +88,15 @@ public class ConfirmOrderUseCaseStepDefinition : MongoDbFixture
     {
         Enum.TryParse(status, out OrderStatus expectedStatus);
         
-        var orders = await _listOrderUseCase.Execute();
-        var order = orders.SingleOrDefault();
-
-        order.Should().NotBeNull();
-        order.Status.Should().Be(expectedStatus.ToString());
+        var order = await _getOrderUseCase.Execute(_confirmOrderId.Value);
+        order
+            .Should()
+            .NotBeNull();
+        
+        order
+            .Status
+            .Should()
+            .Be(expectedStatus.ToString());
     }
     
     [When("cancelling the order")]
@@ -107,13 +110,13 @@ public class ConfirmOrderUseCaseStepDefinition : MongoDbFixture
         await _cancelOrderUseCase.Execute(cancelRequest);
     }
 
-    [Given(@"confirming the order with client id '(.*)' and product details table:")]
+    [Given("confirming the order with client id '(.*)' and product details table:")]
     public async Task GivenConfirmingTheOrderWithClientIdAndProductDetailsTable(string clientId, Table productDetailsTable)
     {
         await WhenConfirmingTheOrder(clientId, productDetailsTable);
     }
 
-    [Then(@"the payment status should be '(.*)'")]
+    [Then("the payment status should be '(.*)'")]
     public async Task ThenThePaymentStatusShouldBe(string status)
     {
         Enum.TryParse(status, out OrderStatus expectedStatus);
@@ -128,5 +131,14 @@ public class ConfirmOrderUseCaseStepDefinition : MongoDbFixture
             .PaymentStatus
             .Should()
             .Be(expectedStatus);
+    }
+
+    [Then("should have '(.*)' order")]
+    public async Task ThenShouldHaveOrder(int count)
+    {
+        var orders = await _getOrderUseCase.Execute();
+        orders
+            .Should()
+            .HaveCount(count);
     }
 }

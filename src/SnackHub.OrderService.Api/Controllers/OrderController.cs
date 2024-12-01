@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SnackHub.OrderService.Api.Extensions;
@@ -16,18 +15,18 @@ public class OrderController : ControllerBase
 {
     private readonly IConfirmOrderUseCase _confirmOrderUseCase;
     private readonly ICancelOrderUseCase _cancelOrderUseCase;
-    private readonly IListOrderUseCase _listOrderUseCase;
+    private readonly IGetOrderUseCase _getOrderUseCase;
     private readonly ICheckPaymentStatusUseCase _checkPaymentStatusUseCase;
 
     public OrderController(
         IConfirmOrderUseCase confirmOrderUseCase,
         ICancelOrderUseCase cancelOrderUseCase,
-        IListOrderUseCase listOrderUseCase,
+        IGetOrderUseCase getOrderUseCase,
         ICheckPaymentStatusUseCase checkPaymentStatusUseCase)
     {
         _confirmOrderUseCase = confirmOrderUseCase;
         _cancelOrderUseCase = cancelOrderUseCase;
-        _listOrderUseCase = listOrderUseCase;
+        _getOrderUseCase = getOrderUseCase;
         _checkPaymentStatusUseCase = checkPaymentStatusUseCase;
     }
     
@@ -36,7 +35,7 @@ public class OrderController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<IEnumerable<OrderResponse>>> GetAll()
     {
-        var orders = await _listOrderUseCase.Execute();
+        var orders = await _getOrderUseCase.Execute();
         return Ok(orders);
     }
     
@@ -70,6 +69,19 @@ public class OrderController : ControllerBase
     [ProducesResponseType(typeof(CheckPaymentStatusResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<CheckPaymentStatusResponse>> CheckPaymentStatus(Guid orderId)
+    {
+        var request = new CheckPaymentStatusRequest { OrderId = orderId };
+        var response = await _checkPaymentStatusUseCase.Execute(request);
+
+        return response.IsValid
+            ? Ok(response)
+            : NotFound();
+    }
+    
+    [HttpGet("{orderId:guid}")]
+    [ProducesResponseType(typeof(CheckPaymentStatusResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<CheckPaymentStatusResponse>> GetOrderById(Guid orderId)
     {
         var request = new CheckPaymentStatusRequest { OrderId = orderId };
         var response = await _checkPaymentStatusUseCase.Execute(request);

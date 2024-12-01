@@ -82,9 +82,7 @@ public class ConfirmOrderUseCase : IConfirmOrderUseCase
         var products = await _productRepository.GetByIdsAsync(requestItems.Keys);
         var productMap = products.ToDictionary(product => product.Id);
         if (productMap.Count != requestItems.Count)
-        {
             return ([], false);
-        }
 
         var orderItems = requestItems
             .Select(item =>

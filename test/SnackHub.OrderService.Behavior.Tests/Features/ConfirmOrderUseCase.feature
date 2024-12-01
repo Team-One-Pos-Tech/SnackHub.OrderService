@@ -10,4 +10,5 @@ Feature: Confirm Order Use Case
           | ProductId                            | Quantity |
           | 919806ea-f94d-401b-a1f6-9a15291c4122 | 2        |
           | fea2f300-f37a-438f-9f10-f514ecd030b2 | 1        |
-        Then the order status should be 'Confirmed'
+        Then should have '1' order
+        And the order status should be 'Confirmed'

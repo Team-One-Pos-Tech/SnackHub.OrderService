@@ -11,7 +11,7 @@ public static class UseCasesExtensions
         return serviceCollection
             .AddScoped<IConfirmOrderUseCase, ConfirmOrderUseCase>()
             .AddScoped<ICancelOrderUseCase, CancelOrderUseCase>()
-            .AddScoped<IListOrderUseCase, ListOrderUseCase>()
+            .AddScoped<IGetOrderUseCase, GetOrderUseCase>()
             .AddScoped<ICheckPaymentStatusUseCase, CheckPaymentStatusUseCase>();
     }
 }

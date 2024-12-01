@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using SnackHub.OrderService.Domain.Contracts;
 using SnackHub.OrderService.Domain.Entities;
@@ -11,15 +10,11 @@ namespace SnackHub.OrderService.Infra.Repositories.MongoDB;
 
 public class ProductRepository : BaseRepository<Product>, IProductRepository
 {
-    private readonly ILogger<ProductRepository> _logger;
-    
     public ProductRepository(
         IMongoDatabase mongoDatabase, 
-        ILogger<ProductRepository> logger, 
         string collectionName = "Products") 
         : base(mongoDatabase, collectionName)
     {
-        _logger = logger;
     }
 
     public async Task<IEnumerable<Product>> GetByIdsAsync(IEnumerable<Guid> ids)
@@ -32,16 +27,19 @@ public class ProductRepository : BaseRepository<Product>, IProductRepository
         await InsertAsync(product);
     }
 
+    public async Task AddManyAsync(IEnumerable<Product> products)
+    {
+        await InsertList(products);
+    }
+
     public async Task EditAsync(Product product)
     {
-        var filter = Builders<Product>.Filter.Eq(p => p.Id, product.Id);
-        await MongoCollection.ReplaceOneAsync(filter, product);
+        await UpdateByPredicateAsync(px => px.Id == product.Id, product);
     }
 
     public async Task RemoveAsync(Guid id)
     {
-        var filter = Builders<Product>.Filter.Eq(p => p.Id, id);
-        await MongoCollection.DeleteOneAsync(filter);
+        await DeleteByPredicateAsync(product => product.Id == id);
     }
     
     public async Task<Product?> GetProductByIdAsync(Guid id)

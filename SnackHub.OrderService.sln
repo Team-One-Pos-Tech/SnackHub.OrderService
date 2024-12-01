@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackHub.OrderService.Infra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackHub.OrderService.Api", "src\SnackHub.OrderService.Api\SnackHub.OrderService.Api.csproj", "{DB3A595F-C6AE-40D6-9FC6-FD69791A7148}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnackHub.OrderService.Behavior.Tests", "test\SnackHub.OrderService.Behavior.Tests\SnackHub.OrderService.Behavior.Tests.csproj", "{FF3E85D4-5AA8-48E8-8890-B054E38E6C40}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,7 @@ Global
 		{17E7F499-C0A9-4A17-8E90-0FF9CB137BA5} = {DC153A39-CD39-4E83-A667-4B7C606053B0}
 		{45F6989A-B60D-4414-8806-75EE43645281} = {DC153A39-CD39-4E83-A667-4B7C606053B0}
 		{DB3A595F-C6AE-40D6-9FC6-FD69791A7148} = {DC153A39-CD39-4E83-A667-4B7C606053B0}
+		{FF3E85D4-5AA8-48E8-8890-B054E38E6C40} = {192F05DE-71D5-4745-A404-7FB0536D07DC}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{50909D26-15CD-4362-BACE-A3ED53316F3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -42,5 +45,9 @@ Global
 		{DB3A595F-C6AE-40D6-9FC6-FD69791A7148}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB3A595F-C6AE-40D6-9FC6-FD69791A7148}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB3A595F-C6AE-40D6-9FC6-FD69791A7148}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF3E85D4-5AA8-48E8-8890-B054E38E6C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF3E85D4-5AA8-48E8-8890-B054E38E6C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF3E85D4-5AA8-48E8-8890-B054E38E6C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF3E85D4-5AA8-48E8-8890-B054E38E6C40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

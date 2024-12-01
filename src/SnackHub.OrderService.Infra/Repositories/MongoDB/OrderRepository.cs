@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using SnackHub.OrderService.Domain.Contracts;
 using SnackHub.OrderService.Domain.Entities;
@@ -11,15 +9,11 @@ namespace SnackHub.OrderService.Infra.Repositories.MongoDB;
 
 public sealed class OrderRepository : BaseRepository<Order>, IOrderRepository
 {
-    private readonly ILogger<OrderRepository> _logger;
-    
     public OrderRepository(
-        ILogger<OrderRepository> logger,
-        IMongoDatabase mongoDatabase, 
+        IMongoDatabase mongoDatabase,
         string collectionName = "Orders") 
         : base(mongoDatabase, collectionName)
     {
-        _logger = logger;
     }
     
     public async Task AddAsync(Order order)
@@ -36,17 +30,9 @@ public sealed class OrderRepository : BaseRepository<Order>, IOrderRepository
     {
         return await FindByPredicateAsync(x => x.Id.Equals(id));
     }
-
+    
     public async Task<IEnumerable<Order>> ListAllAsync()
     {
-        var query = MongoCollection
-            .AsQueryable()
-            .OrderBy(o => o.CreatedAt);
-        
-        _logger.LogDebug("MongoDB query: {Query}", query);
-        
-        var result = query.ToList();
-        
-        return await Task.FromResult(result);
+        return await ListByPredicateAsync(px => true) ?? ArraySegment<Order>.Empty;
     }
 }

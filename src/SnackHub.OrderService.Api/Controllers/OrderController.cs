@@ -40,7 +40,7 @@ public class OrderController : ControllerBase
         return Ok(orders);
     }
     
-    [HttpPost("Confirm")]
+    [HttpPost]
     [ProducesResponseType(typeof(ConfirmOrderResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesDefaultResponseType]

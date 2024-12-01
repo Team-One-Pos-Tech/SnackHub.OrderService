@@ -16,7 +16,6 @@ public class Product
         Price = price;
     }
     
-    private Product() { }
     public static Product Create(Guid id, string name, string description, decimal price)
         => new Product
         {

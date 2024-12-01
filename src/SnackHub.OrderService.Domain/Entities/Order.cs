@@ -52,7 +52,7 @@ public class Order : Entity<Guid>, IAggregateRoot
 
     public void Cancel()
     {
-        if (new[] { OrderStatus.Cancelled, OrderStatus.Confirmed, OrderStatus.Accepted, OrderStatus.Declined }.Contains(Status))
+        if (new[] { OrderStatus.Cancelled, OrderStatus.Accepted, OrderStatus.Declined }.Contains(Status))
         {
             throw new DomainException($"Order is already {GetStatusDescription()} and cannot be cancelled at this time");
         }

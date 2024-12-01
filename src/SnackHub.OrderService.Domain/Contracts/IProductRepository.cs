@@ -9,6 +9,7 @@ namespace SnackHub.OrderService.Domain.Contracts
     {
         Task<IEnumerable<Product>> GetByIdsAsync(IEnumerable<Guid> ids);
         Task AddAsync(Product product);
+        Task AddManyAsync(IEnumerable<Product> products);
         Task EditAsync(Product product);
         Task RemoveAsync(Guid id);
         Task<Product?> GetProductByIdAsync(Guid id);

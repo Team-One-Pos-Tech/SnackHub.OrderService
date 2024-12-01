@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using SnackHub.OrderService.Domain.Contracts;
 using SnackHub.OrderService.Domain.Entities;
@@ -9,15 +8,11 @@ namespace SnackHub.OrderService.Infra.Repositories.MongoDB;
 
 public class ClientRepository : BaseRepository<Client>, IClientRepository
 {
-    private readonly ILogger<ClientRepository> _logger;
-    
     public ClientRepository(
         IMongoDatabase mongoDatabase, 
-        ILogger<ClientRepository> logger, 
         string collectionName = "Clients") 
         : base(mongoDatabase, collectionName)
     {
-        _logger = logger;
     }
 
     public async Task AddAsync(Client client)

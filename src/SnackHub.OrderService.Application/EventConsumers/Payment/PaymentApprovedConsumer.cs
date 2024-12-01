@@ -33,10 +33,7 @@ public class PaymentApprovedConsumer : IConsumer<PaymentApproved>
         
         var order = await _orderRepository.GetByIdAsync(context.Message.OrderId);
         if (order is null)
-        {
-            // Do something/Return a event message in case it does not exist
             return;
-        }
         
         order.Checkout(true);
         order.UpdateOrderStatus(OrderStatus.Confirmed);
@@ -55,6 +52,5 @@ public class PaymentApprovedConsumer : IConsumer<PaymentApproved>
         
         var eventMessage = new ProductionOrderSubmittedRequest(orderId, productList);
         await _publishEndpoint.Publish(eventMessage);
-
     }
 }

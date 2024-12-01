@@ -8,11 +8,9 @@ using SnackHub.OrderService.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services
     .AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen(options =>
@@ -26,7 +24,6 @@ builder.Services
     })
     .AddHttpClient();
 
-
 builder
     .Services
     .AddMongoDb(builder.Configuration)
@@ -38,7 +35,6 @@ builder
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (bool.TryParse(builder.Configuration.GetSection("https").Value, out var result) && result)
     app.UseHttpsRedirection();
 

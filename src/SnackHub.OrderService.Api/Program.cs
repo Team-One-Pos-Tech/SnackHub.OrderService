@@ -4,6 +4,9 @@ using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using SnackHub.OrderService.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +26,8 @@ builder.Services
         
     })
     .AddHttpClient();
+
+BsonSerializer.TryRegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
 builder
     .Services

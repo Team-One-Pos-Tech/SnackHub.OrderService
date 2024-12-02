@@ -12,7 +12,7 @@ public class OrderItem : ValueObject
     public int Quantity { get; init; }
     public decimal Total => UnitPrice * Quantity;
     
-    protected OrderItem(Guid productId, string productName, decimal unitPrice, int quantity)
+    public OrderItem(Guid productId, string productName, decimal unitPrice, int quantity)
     {
         ArgumentOutOfRangeException.ThrowIfEqual(productId, Guid.Empty);
         ArgumentException.ThrowIfNullOrWhiteSpace(productName);

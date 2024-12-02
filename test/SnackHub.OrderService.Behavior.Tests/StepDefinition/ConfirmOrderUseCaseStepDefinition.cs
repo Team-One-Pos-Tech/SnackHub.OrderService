@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MassTransit;
@@ -82,7 +83,7 @@ public class ConfirmOrderUseCaseStepDefinition : MongoDbFixture
         
         _confirmOrderId = orderResponse.OrderId;
     }
-
+    
     [Then("the order status should be '(.*)'")]
     public async Task ThenTheOrderStatusShouldBe(string status)
     {
@@ -140,5 +141,25 @@ public class ConfirmOrderUseCaseStepDefinition : MongoDbFixture
         orders
             .Should()
             .HaveCount(count);
+    }
+
+    [Then(@"confirming the order with client id '(.*)' and no product details, it should fail with message '(.*)'")]
+    public async Task ThenConfirmingTheOrderWithClientIdAndNoProductDetailsItShouldFailWithMessage(string clientId, string expectedMessage)
+    {
+        var confirmRequest = ConfirmOrderRequest.Create(clientId, []);
+        
+        var orderResponse = await _confirmOrderUseCase.Execute(confirmRequest);
+        
+        orderResponse
+            .Notifications
+            .Should()
+            .HaveCount(1, "Because the order needs to have at least one product!");
+
+        orderResponse
+            .Notifications
+            .First()
+            .Message
+            .Should()
+            .Be(expectedMessage);
     }
 }
